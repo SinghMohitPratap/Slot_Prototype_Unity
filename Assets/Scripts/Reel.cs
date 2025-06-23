@@ -7,22 +7,25 @@ public class Reel : MonoBehaviour
     public RectTransform content;
     internal float spinSpeed = 1000f;
     internal float spinDuration = 2f;
-    internal Sprite[] symbols;
+    internal Symbol[] symbols;
     internal GameObject symbolPrefab;
     internal int visibleCount = 3; // How many symbols visible
-
     private bool isSpinning = false;
 
-    Sprite[] columnsResult;
 
-    public void SetColResults(Sprite[] colResults) 
-    {
-        columnsResult = colResults;
-    }
-
+  
     private void Start()
     {
-        InitReel();
+
+        for (int i = 0; i < visibleCount; i++) 
+        {
+            GameObject go = Instantiate(symbolPrefab, content);
+            go.GetComponent<Image>().sprite = SpinReels.Instance.symbol_SO.symbolList[Random.Range(0, SpinReels.Instance.symbol_SO.symbolList.Length)].sprite;
+
+        }
+       // InitReel();
+
+
     }
     public void InitReel()
     {
@@ -31,10 +34,11 @@ public class Reel : MonoBehaviour
             Destroy(child.gameObject);
 
         // Add extra symbols to create loop illusion
-        for (int i = 0; i < visibleCount + 5; i++)
+        for (int i = 0; i < symbols.Length; i++)
         {
             GameObject go = Instantiate(symbolPrefab, content);
-            go.GetComponent<Image>().sprite = symbols[Random.Range(0, symbols.Length)];
+            go.GetComponent<Image>().sprite = symbols[i].sprite;
+            go.GetComponent<SymbolScript>().symbolData = symbols[i];
         }
         float symbolHeight = ((RectTransform)content.GetChild(0)).rect.height;
         float offset = content.anchoredPosition.y % symbolHeight;
@@ -74,18 +78,21 @@ public class Reel : MonoBehaviour
                 // Move bottom-most symbol to the top
                 Transform bottom = content.GetChild(0);
                 bottom.SetAsLastSibling();
-                bottom.GetComponent<Image>().sprite = symbols[Random.Range(0, symbols.Length)];
+               // bottom.GetComponent<Image>().sprite = symbols[Random.Range(0, symbols.Length)];
             }
         
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        for (int i = content.childCount-1; i > content.childCount - 4; i--)
-        {
-            content.GetChild(i).GetComponent<Image>().sprite = columnsResult[(content.childCount - 1)-i];
-        }
+
         float offset = content.anchoredPosition.y % symbolHeight;
         content.anchoredPosition -= new Vector2(0, offset);
+        Symbol[] resultReelArray = new Symbol[SpinReels.Instance.prng_instance.rows];
+        for (int i = content.childCount-1; i >content.childCount-4; i--) 
+        {
+            resultReelArray[(content.childCount - 1) - i] = content.GetChild(i).GetComponent<SymbolScript>().symbolData;
+        }
+        SpinReels.Instance.CreateResultMatrix(resultReelArray,gameObject.transform.GetSiblingIndex());
         isSpinning = false;
     }
 

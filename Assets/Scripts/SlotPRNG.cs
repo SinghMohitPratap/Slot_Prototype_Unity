@@ -15,7 +15,7 @@ public class SlotPRNG : MonoBehaviour
   
     public int rows = 3;
     public int columns = 5;
-    
+    int illusion_row = 10;
 
     private List<Symbol> symbolPool;
 
@@ -27,7 +27,7 @@ public class SlotPRNG : MonoBehaviour
 
     public Symbol[,] GenerateSpin(float spinBet)
     {
-        Symbol[,] result = new Symbol[rows, columns];
+        Symbol[,] result = new Symbol[illusion_row, columns];
         totalWagered += spinBet;
 
         EnsureSymbolPool();
@@ -35,17 +35,14 @@ public class SlotPRNG : MonoBehaviour
         // Fill each cell from weighted symbol pool
         for (int col = 0; col < columns; col++)
         {
-            for (int row = 0; row < rows; row++)
+            for (int row = 0; row < illusion_row; row++)
             {
                 result[row, col] = GetRandomSymbol();
             }
         }
 
-        int win = CalculateWin(result);
-        totalPaidOut += win;
-
-        currentRTP = totalWagered > 0 ? totalPaidOut / totalWagered : 0;
-
+      
+      
         // Optional: adjust future spins based on how far current RTP is from target RTP
 
         return result;
@@ -68,7 +65,7 @@ public class SlotPRNG : MonoBehaviour
         return symbolPool[Random.Range(0, symbolPool.Count)];
     }
 
-    private int CalculateWin(Symbol[,] grid)
+    public int CalculateWin(Symbol[,] grid)
     {
         int win = 0;
 
@@ -90,10 +87,39 @@ public class SlotPRNG : MonoBehaviour
             if (match)
             {
                 win += grid[row, 0].payout;
+                Debug.Log($"row: {row} matches");
             }
         }
 
-        // You can expand this to vertical, diagonal, 2-of-a-kind, wild logic, etc.
+        // Simple vertical match logic for now
+        for (int col = 0; col < columns; col++)
+        {
+            string matchName = grid[0, col].name;
+            bool match = true;
+
+            for (int row = 1; row < rows; row++)
+            {
+                if (grid[row, col].name != matchName)
+                {
+                    match = false;
+                    break;
+                }
+            }
+
+            if (match)
+            {
+               win += grid[0, col].payout;
+                Debug.Log($"column: {col} matches");
+            }
+        }
+
+
+        totalPaidOut += win;
+
+        currentRTP = totalWagered > 0 ? totalPaidOut / totalWagered : 0;
+
         return win;
+        // You can expand this to vertical, diagonal, 2-of-a-kind, wild logic, etc.
+       
     }
 }

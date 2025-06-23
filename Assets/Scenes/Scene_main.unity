@@ -230,11 +230,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reelContainer: {fileID: 894034799}
-  spinSpeed: 1000
-  spinDuration: 2
+  spinSpeed: 1400
+  spinDuration: 4
   symbolPrefab: {fileID: 3359699546881325812, guid: f5ab6578040b0944da701c28d29fb91d, type: 3}
   visibleCount: 3
-  symbolPool: []
   symbol_SO: {fileID: 11400000, guid: 3f24c32310a64ae42ad8352ce67261cc, type: 2}
   boostMatch: 0
   prng_instance: {fileID: 364758609}

@@ -14,7 +14,7 @@ public class SpinReels : MonoBehaviour
 
     public GameObject symbolPrefab;
     public int visibleCount = 3; // How many symbols visible
-    public List<Sprite> symbolPool;
+
     public SymbolsScriptableObjectScript symbol_SO;
 
 
@@ -44,57 +44,68 @@ public class SpinReels : MonoBehaviour
         }
     }
     public float spinBet;
+    Symbol[,] resultMatrix;
     private void Start()
     {
-     
-       
+        resultMatrix = new Symbol[prng_instance.rows, prng_instance.columns];
+
+
 
         reelsArray = new Reel[reelContainer.childCount];
 
-        symbolPool = symbol_SO.symbolList.Select(x => x.sprite).ToList();
+     
         for (int i = 0; i < reelsArray.Length; i++) 
         {
             reelsArray[i] = reelContainer.GetChild(i).GetComponent<Reel>();
             reelContainer.GetChild(i).GetComponent<Reel>().spinSpeed= spinSpeed;
             reelContainer.GetChild(i).GetComponent<Reel>().spinDuration= spinDuration;
-            reelContainer.GetChild(i).GetComponent<Reel>().symbols = symbolPool.ToArray();
+           
             reelContainer.GetChild(i).GetComponent<Reel>().symbolPrefab = symbolPrefab;
             reelContainer.GetChild(i).GetComponent<Reel>().visibleCount= visibleCount;
    
         }
-        
+       // SetSpinValues();
     }
 
 
     void SetSpinValues() 
     {
         symbolMatrix = prng_instance.GenerateSpin(spinBet);
-      
+        
         for (int i = 0; i < reelsArray.Length; i++)
-        {           
-            reelContainer.GetChild(i).GetComponent<Reel>().SetColResults(SetReelResult(i));
+        {
+            Symbol[] reelArray = new Symbol[symbolMatrix.GetLength(0)];
+            for (int j = 0; j < reelArray.Length; j++)
+            {
+                reelArray[j] = symbolMatrix[j, i];
+            }
+            reelContainer.GetChild(i).GetComponent<Reel>().symbols = reelArray;
+            reelContainer.GetChild(i).GetComponent<Reel>().InitReel();
         }
     }
 
-    Sprite[] SetReelResult(int i) 
-    {    
-        Sprite[] rows = new Sprite[symbolMatrix.GetLength(0)];
-        for (int j = 0; j < symbolMatrix.GetLength(0); j++)
-        {
-            rows[j] = symbolMatrix[j, i].sprite;
-        }
-        return rows;
-    }
 
     public void OnClickSpinReelBtn() 
     {
         SetSpinValues();
+        counter = 0;
         for (int i = 0; i < reelsArray.Length; i++) 
         {
             reelsArray[i].StartSpin();
         }
     }
-
-
-
+    int counter;
+    public void CreateResultMatrix(Symbol[] reelData,int columnIndex) 
+    {
+        Debug.Log($"Index Value: {columnIndex}");
+        for (int i = 0; i < reelData.Length; i++) 
+        {
+            resultMatrix[i,columnIndex] = reelData[i];       
+        }
+        counter++;
+        if (counter == prng_instance.columns) 
+        {
+            prng_instance.CalculateWin(resultMatrix);
+        }
+    }
 }
