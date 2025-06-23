@@ -12,29 +12,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567ec10b948df354f9f7203217f11320, type: 3}
   m_Name: symbolWeights
   m_EditorClassIdentifier: 
-  symbolWeights:
-  - symbol: 0
-    weight: 5
-  - symbol: 1
-    weight: 3
-  - symbol: 2
+  symbolList:
+  - name: 0
+    sprite: {fileID: 21300000, guid: 7d87440a30307ec4ab4d617b7a5f52fb, type: 3}
     weight: 1
-  animalSymbols:
-  - {fileID: 21300000, guid: 684252dd0a01bb14fab70097949088e9, type: 3}
-  - {fileID: 21300000, guid: 8493e00eb93d385479da0c6c346b5369, type: 3}
-  - {fileID: 21300000, guid: 5a594b978ba591940bc0f5e6e146b547, type: 3}
-  - {fileID: 21300000, guid: 6b2a5c1f9720b9048b999d98077273b8, type: 3}
-  - {fileID: 21300000, guid: 877d94fdbe24bd5419cff08cc9b3ba31, type: 3}
-  - {fileID: 21300000, guid: b51fe77ef0ba397428aae41fe4412242, type: 3}
-  - {fileID: 21300000, guid: 934352a9d4f781e409c42d554e2e0011, type: 3}
-  - {fileID: 21300000, guid: 7b48f0ae86fbe5340b07aca475c4f305, type: 3}
-  fruitsSymbols:
-  - {fileID: 21300000, guid: 88a59cb39ad96a547a1b346c8d0bd3be, type: 3}
-  - {fileID: 21300000, guid: ed18626ce63099a4ebf77792950f2566, type: 3}
-  - {fileID: 21300000, guid: eab1f4242aacdda4a926af2bc731cc48, type: 3}
-  - {fileID: 21300000, guid: 38bd90f1fa0b94b4fb6bf85335b719b7, type: 3}
-  - {fileID: 21300000, guid: 5f7e5125614d4d2439e5e0dbb04a6bc2, type: 3}
-  - {fileID: 21300000, guid: 63eb3d1bf2322e24ea829f044c0283c4, type: 3}
-  - {fileID: 21300000, guid: aa940ab4004ecc542886577888a1e162, type: 3}
-  wildSymbols:
-  - {fileID: 21300000, guid: 7d87440a30307ec4ab4d617b7a5f52fb, type: 3}
+    payout: 100
+  - name: 1
+    sprite: {fileID: 21300000, guid: 684252dd0a01bb14fab70097949088e9, type: 3}
+    weight: 3
+    payout: 25
+  - name: 2
+    sprite: {fileID: 21300000, guid: 8493e00eb93d385479da0c6c346b5369, type: 3}
+    weight: 3
+    payout: 25
+  - name: 3
+    sprite: {fileID: 21300000, guid: 5a594b978ba591940bc0f5e6e146b547, type: 3}
+    weight: 3
+    payout: 25
+  - name: 4
+    sprite: {fileID: 21300000, guid: 6b2a5c1f9720b9048b999d98077273b8, type: 3}
+    weight: 3
+    payout: 25
+  - name: 5
+    sprite: {fileID: 21300000, guid: 877d94fdbe24bd5419cff08cc9b3ba31, type: 3}
+    weight: 3
+    payout: 25
+  - name: 6
+    sprite: {fileID: 21300000, guid: b51fe77ef0ba397428aae41fe4412242, type: 3}
+    weight: 3
+    payout: 25
+  - name: 7
+    sprite: {fileID: 21300000, guid: 934352a9d4f781e409c42d554e2e0011, type: 3}
+    weight: 3
+    payout: 25
+  - name: 8
+    sprite: {fileID: 21300000, guid: 7b48f0ae86fbe5340b07aca475c4f305, type: 3}
+    weight: 3
+    payout: 25
+  - name: 9
+    sprite: {fileID: 21300000, guid: 88a59cb39ad96a547a1b346c8d0bd3be, type: 3}
+    weight: 2
+    payout: 50
+  - name: 10
+    sprite: {fileID: 21300000, guid: ed18626ce63099a4ebf77792950f2566, type: 3}
+    weight: 2
+    payout: 50
+  - name: 11
+    sprite: {fileID: 21300000, guid: eab1f4242aacdda4a926af2bc731cc48, type: 3}
+    weight: 2
+    payout: 50
+  - name: 12
+    sprite: {fileID: 21300000, guid: 38bd90f1fa0b94b4fb6bf85335b719b7, type: 3}
+    weight: 2
+    payout: 50
+  - name: 13
+    sprite: {fileID: 21300000, guid: 5f7e5125614d4d2439e5e0dbb04a6bc2, type: 3}
+    weight: 2
+    payout: 50
+  - name: 14
+    sprite: {fileID: 21300000, guid: 63eb3d1bf2322e24ea829f044c0283c4, type: 3}
+    weight: 2
+    payout: 50
+  - name: 15
+    sprite: {fileID: 21300000, guid: aa940ab4004ecc542886577888a1e162, type: 3}
+    weight: 2
+    payout: 50

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
@@ -17,20 +18,19 @@ public class SpinReels : MonoBehaviour
     public SymbolsScriptableObjectScript symbol_SO;
 
 
-    public Sprite[,] resultMatrix = new Sprite[3, 5]; // 3 rows, 5 columns
+   
     public bool boostMatch;
-   internal bool isMatchDone;
+    internal bool isMatchDone;
 
     private static SpinReels instance;
     public static SpinReels Instance { get { return instance; } private set { }  }
 
     private SpinReels() { }
 
-
+    public SlotPRNG prng_instance;
 
     //work needs to be done..
-    Sprite[,] symbolMatrix = new Sprite[3, 5];
-
+    Symbol[,] symbolMatrix;
     private void Awake()
     {
         if (instance == null)
@@ -43,30 +43,15 @@ public class SpinReels : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    public float spinBet;
     private void Start()
     {
-        isMatchDone = false;
-
-
-        // 7 Fruit symbols - more frequent
-        for (int i = 0; i < symbol_SO.fruitsSymbols.Length; i++)
-            for (int j = 0; j < 5; j++) // 5 entries per fruit
-                symbolPool.Add(symbol_SO.fruitsSymbols[i]);
-
-        // 8 Animal symbols - medium frequency
-        for (int i = 0; i < symbol_SO.animalSymbols.Length; i++)
-            for (int j = 0; j < 3; j++) // 3 entries per animal
-                symbolPool.Add(symbol_SO.animalSymbols[i]);
-
-        // 1 Wild symbol - very rare
-        for (int j = 0; j < symbol_SO.wildSymbols.Length; j++)
-            symbolPool.Add(symbol_SO.wildSymbols[j]);
-
+     
        
 
-
         reelsArray = new Reel[reelContainer.childCount];
+
+        symbolPool = symbol_SO.symbolList.Select(x => x.sprite).ToList();
         for (int i = 0; i < reelsArray.Length; i++) 
         {
             reelsArray[i] = reelContainer.GetChild(i).GetComponent<Reel>();
@@ -75,10 +60,35 @@ public class SpinReels : MonoBehaviour
             reelContainer.GetChild(i).GetComponent<Reel>().symbols = symbolPool.ToArray();
             reelContainer.GetChild(i).GetComponent<Reel>().symbolPrefab = symbolPrefab;
             reelContainer.GetChild(i).GetComponent<Reel>().visibleCount= visibleCount;
+   
+        }
+        
+    }
+
+
+    void SetSpinValues() 
+    {
+        symbolMatrix = prng_instance.GenerateSpin(spinBet);
+      
+        for (int i = 0; i < reelsArray.Length; i++)
+        {           
+            reelContainer.GetChild(i).GetComponent<Reel>().SetColResults(SetReelResult(i));
         }
     }
+
+    Sprite[] SetReelResult(int i) 
+    {    
+        Sprite[] rows = new Sprite[symbolMatrix.GetLength(0)];
+        for (int j = 0; j < symbolMatrix.GetLength(0); j++)
+        {
+            rows[j] = symbolMatrix[j, i].sprite;
+        }
+        return rows;
+    }
+
     public void OnClickSpinReelBtn() 
     {
+        SetSpinValues();
         for (int i = 0; i < reelsArray.Length; i++) 
         {
             reelsArray[i].StartSpin();

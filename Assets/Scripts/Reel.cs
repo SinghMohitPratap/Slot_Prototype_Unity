@@ -13,6 +13,12 @@ public class Reel : MonoBehaviour
 
     private bool isSpinning = false;
 
+    Sprite[] columnsResult;
+
+    public void SetColResults(Sprite[] colResults) 
+    {
+        columnsResult = colResults;
+    }
 
     private void Start()
     {
@@ -74,9 +80,13 @@ public class Reel : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-     
+        for (int i = content.childCount-1; i > content.childCount - 4; i--)
+        {
+            content.GetChild(i).GetComponent<Image>().sprite = columnsResult[(content.childCount - 1)-i];
+        }
         float offset = content.anchoredPosition.y % symbolHeight;
         content.anchoredPosition -= new Vector2(0, offset);
+        isSpinning = false;
     }
 
     
