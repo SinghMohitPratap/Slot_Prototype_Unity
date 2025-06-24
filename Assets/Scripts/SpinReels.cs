@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpinReels : MonoBehaviour
 {
@@ -85,15 +86,25 @@ public class SpinReels : MonoBehaviour
     }
 
 
-    public void OnClickSpinReelBtn() 
+    public void OnClickSpinReelBtn(Button clickedBtn) 
     {
+        clickedBtn.interactable = false;
         SetSpinValues();
         counter = 0;
         for (int i = 0; i < reelsArray.Length; i++) 
         {
             reelsArray[i].StartSpin();
         }
+        StartCoroutine(EnableInteraction(clickedBtn));
     }
+
+    
+    IEnumerator EnableInteraction(Button clickedBtn) 
+    {
+        yield return new WaitForSeconds(spinDuration);
+        clickedBtn.interactable = true;
+    }
+
     int counter;
     public void CreateResultMatrix(Symbol[] reelData,int columnIndex) 
     {

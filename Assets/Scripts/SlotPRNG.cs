@@ -119,7 +119,7 @@ public class SlotPRNG : MonoBehaviour
         currentRTP = totalWagered > 0 ? totalPaidOut / totalWagered : 0;
 
         return win;
-        // You can expand this to vertical, diagonal, 2-of-a-kind, wild logic, etc.
+
        
     }
 }
